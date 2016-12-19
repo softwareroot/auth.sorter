@@ -15,7 +15,7 @@ public class MusicSorter {
 	
 	public static void main(String[] args) {
 		
-		initJFrame("Music Sorter", 620, 400);
+		initJFrame("Music Sorter v.Alpha 0.0001", 320, 240);
 		
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Zadaj uplnu cestu k suboru s hudbou:");
