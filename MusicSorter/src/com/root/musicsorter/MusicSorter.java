@@ -15,7 +15,7 @@ public class MusicSorter {
 	
 	public static void main(String[] args) {
 		
-		initJFrame("Music Sorter v.Alpha 0.0001", 320, 240);
+		initJFrame("Music Sorter v.Alpha 0.0001", 420, 260);
 		
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Zadaj uplnu cestu k suboru s hudbou:");
@@ -24,8 +24,7 @@ public class MusicSorter {
 		File[] listZloziek = new File(zlozkaHudbaNeutriedena).listFiles();
 		ArrayList<String> menaAutorov = new ArrayList<String>();
 		
-		System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou kokot:");
-		System.out.println("Jebem ti mater.");
+		System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou hudbou:");
 		String cielovaZlozka = scanner.nextLine();
 		
 		scanner.close();
