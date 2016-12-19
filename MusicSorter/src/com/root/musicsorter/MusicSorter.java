@@ -25,6 +25,7 @@ public class MusicSorter {
 		ArrayList<String> menaAutorov = new ArrayList<String>();
 		
 		System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou kokot:");
+		System.out.println("Jebem ti mater.");
 		String cielovaZlozka = scanner.nextLine();
 		
 		scanner.close();
