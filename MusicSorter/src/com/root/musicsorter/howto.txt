@@ -1,0 +1,44 @@
+1. Nacitat cestu k suborom
+
+2. Ulozit vsetky subory do
+listu suborov
+
+3. Prejst list vsetkych
+suborov a zistit ci su to len
+zlozky alebo aj .mp3 subory
+
+4. Ak su to len zlozky, treba
+otvorit prvu zlozku, zistit
+nazov prvej pesnicky a zapisat
+jej zaciatok (autora)
+("Pythius" - Jebat na to) ako
+konstantu od ktorej sa bude
+odvyjat vytvorenie zlozky s
+menom autora a taktiez
+vyhladavanie dalsich jeho
+pesniciek.
+
+5. V hudba-sorted sa vytvori
+zlozka podla ulozeneho nazvu
+autora - Pythius
+
+6. Prehladavanie bude pokracovat,
+avsak s tym, ze bude sa brat
+ohlad na to, ze slovo
+"Pythius" uz bolo lokalizovane,
+tj. zlozka pre neho uz
+vytvorena a dalej sa uz
+najdene pesnicky s jeho
+nazvom budu ukladat do tej
+vytvorenej zlozky.
+(Vzdy sa novy zaciatok nazvu
+pesnicky, tj. meno autora ktore
+este nebolo predtym videne,
+ulozi a podla neho sa vytvori
+zlozka v hudba-sorted a vsetky
+ostatne pesnicky s tymto
+autorom budu uz len presunute
+do tej zlozky.
+
+7. Takto sa prejdu vsetky
+zlozky ulozene v subore Hudba.
