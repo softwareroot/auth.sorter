@@ -24,7 +24,7 @@ public class MusicSorter {
 		File[] listZloziek = new File(zlozkaHudbaNeutriedena).listFiles();
 		ArrayList<String> menaAutorov = new ArrayList<String>();
 		
-		System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou hudbou:");
+		System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou kokot:");
 		String cielovaZlozka = scanner.nextLine();
 		
 		scanner.close();
