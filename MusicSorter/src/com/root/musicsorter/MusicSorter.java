@@ -30,7 +30,7 @@ public class MusicSorter {
 		scanner.close();
 		
 		vytvorZlozku(cielovaZlozka);
-		vytvorCieloveZlozky(cielovaZlozka, listZloziek, menaAutorov);
+		vytvorCieloveZlozky(zlozkaHudbaNeutriedena, cielovaZlozka, listZloziek, menaAutorov);
 		
 		File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();	
 		skopirujPesnickyDoCielovychZloziek(listZloziek, listZloziekAutorov);
@@ -55,7 +55,31 @@ public class MusicSorter {
 		dir.mkdir();
 	}
 	
-	private static void vytvorCieloveZlozky(String cielovaZlozka, File[] listZloziek, ArrayList<String> menaAutorov) {
+	private static void vytvorCieloveZlozky(String neutriedenaZlozka, String cielovaZlozka,
+			File[] listZloziek, ArrayList<String> menaAutorov) {
+		
+		File[] listSuborovHlavnejZlozky = new File(neutriedenaZlozka).listFiles();
+		ArrayList<File> listVsetkychPriecinkov = new ArrayList<File>();
+		ArrayList<File> listVsetkychPesniciek = new ArrayList<File>();
+		
+		// Prechadzam vsetky subory v neutriedenej zlozke
+		for (int i = 0; i < listSuborovHlavnejZlozky.length; i++) {
+			
+			if (listSuborovHlavnejZlozky[i].isDirectory()) {
+				// Ak je subor v neutriedenej hlavnej zlozke priecinok
+				listVsetkychPriecinkov.add(listSuborovHlavnejZlozky[i]);
+				
+			} else if (listSuborovHlavnejZlozky[i].isFile()) {
+				// Ak je subor v neutriedenej hlavnej zlozke pesnicka
+				listVsetkychPesniciek.add(listSuborovHlavnejZlozky[i]);
+				
+			}
+			
+		}
+		
+		System.out.println(listVsetkychPriecinkov);
+		System.out.println(listVsetkychPesniciek);
+		
 		/*
 		File[] listSuborov;
 		
