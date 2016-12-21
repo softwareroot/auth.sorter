@@ -15,7 +15,7 @@ public class MusicSorter {
 	
 	public static void main(String[] args) {
 		
-		initJFrame("Music Sorter v.Alpha 0.0001", 420, 260);
+		//initJFrame("Music Sorter v.Alpha 0.0001", 420, 260);
 		
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Zadaj uplnu cestu k suboru s hudbou:");
@@ -56,8 +56,11 @@ public class MusicSorter {
 	}
 	
 	private static void vytvorCieloveZlozky(String cielovaZlozka, File[] listZloziek, ArrayList<String> menaAutorov) {
+		/*
 		File[] listSuborov;
+		
 		for (int i = 0; i < listZloziek.length; i++) {
+			
 			if (listZloziek[i].isDirectory()) {
 				listSuborov = listZloziek[i].listFiles();
 				
@@ -102,6 +105,7 @@ public class MusicSorter {
 				}
 			}
 		}
+		*/
 	}
 	
 	private static void skopirujPesnickyDoCielovychZloziek(File[] listZloziek, File[] listZloziekAutorov) {
