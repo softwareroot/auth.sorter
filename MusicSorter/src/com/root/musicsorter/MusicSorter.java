@@ -12,9 +12,9 @@ import org.apache.commons.io.FileUtils;
 public class MusicSorter {
 	
 	private static JFrame frame;
+	private static ArrayList<File> vsetkyPesnicky = new ArrayList<File>();
 	
 	public static void main(String[] args) {
-		
 		//initJFrame("Music Sorter v.Alpha 0.0001", 420, 260);
 		
 		Scanner scanner = new Scanner(System.in);
@@ -26,14 +26,14 @@ public class MusicSorter {
 		
 		System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou hudbou:");
 		String cielovaZlozka = scanner.nextLine();
-		
 		scanner.close();
 		
 		vytvorZlozku(cielovaZlozka);
-		vytvorCieloveZlozky(zlozkaHudbaNeutriedena, cielovaZlozka, listZloziek, menaAutorov);
+		vytvorPoleSoVsetkymiPesnickami(zlozkaHudbaNeutriedena, vsetkyPesnicky);
+		vytvorCieloveZlozky(cielovaZlozka, menaAutorov);
 		
 		File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();	
-		skopirujPesnickyDoCielovychZloziek(listZloziek, listZloziekAutorov);
+		skopirujPesnickyDoCielovychZloziek(listZloziekAutorov);
 		System.out.println("Kopirovanie hudby skoncilo.");
 	}
 	
@@ -55,110 +55,54 @@ public class MusicSorter {
 		dir.mkdir();
 	}
 	
-	private static void vytvorCieloveZlozky(String neutriedenaZlozka, String cielovaZlozka,
-			File[] listZloziek, ArrayList<String> menaAutorov) {
-		
-		File[] listSuborovHlavnejZlozky = new File(neutriedenaZlozka).listFiles();
-		ArrayList<File> listVsetkychPriecinkov = new ArrayList<File>();
-		ArrayList<File> listVsetkychPesniciek = new ArrayList<File>();
-		
-		// Prechadzam vsetky subory v neutriedenej zlozke
-		for (int i = 0; i < listSuborovHlavnejZlozky.length; i++) {
-			
-			if (listSuborovHlavnejZlozky[i].isDirectory()) {
-				// Ak je subor v neutriedenej hlavnej zlozke priecinok
-				listVsetkychPriecinkov.add(listSuborovHlavnejZlozky[i]);
-				
-			} else if (listSuborovHlavnejZlozky[i].isFile()) {
-				// Ak je subor v neutriedenej hlavnej zlozke pesnicka
-				listVsetkychPesniciek.add(listSuborovHlavnejZlozky[i]);
-				
-			}
-			
-		}
-		
-		System.out.println(listVsetkychPriecinkov);
-		System.out.println(listVsetkychPesniciek);
-		
-		/*
-		File[] listSuborov;
-		
-		for (int i = 0; i < listZloziek.length; i++) {
-			
-			if (listZloziek[i].isDirectory()) {
-				listSuborov = listZloziek[i].listFiles();
-				
-				for (int j = 0; j < listSuborov.length; j++) {
-					String menoPesnicky = listSuborov[j].getName();
-					String menoAutora = "";
-					
-					Scanner scan = new Scanner(menoPesnicky);
-					scan.useDelimiter("-");
-					
-					if (scan.hasNext()) {
-				        menoAutora += scan.next();
-				    }
-					scan.close();
-					
-					menaAutorov.add(menoAutora);
-					File zlozkaAutora = new File(cielovaZlozka + "\\" + menoAutora);
-					zlozkaAutora.mkdir();
-					
-				}
-			} else if (listZloziek[i].isFile()) {
-				listSuborov = listZloziek;
-				for (int j = 0; j < listSuborov.length; j++) {
-					if (listSuborov[j].isDirectory())
-						break;
-					
-					String menoPesnicky = listSuborov[j].getName();
-					String menoAutora = "";
-					
-					Scanner scan = new Scanner(menoPesnicky);
-					scan.useDelimiter("-");
-					
-					if (scan.hasNext()) {
-				        menoAutora += scan.next();
-				    }
-					scan.close();
-					
-					menaAutorov.add(menoAutora);
-					File zlozkaAutora = new File(cielovaZlozka + "\\" + menoAutora);
-					zlozkaAutora.mkdir();
-					
-				}
-			}
-		}
-		*/
+	public static void vytvorPoleSoVsetkymiPesnickami(String nazovSuboru, ArrayList<File> pesnicky) {
+	    File directory = new File(nazovSuboru);
+
+	    File[] fList = directory.listFiles();
+	    
+	    for (File file : fList) {
+	        if (file.isFile()) {
+	        	pesnicky.add(file);
+	        } else if (file.isDirectory()) {
+	        	vytvorPoleSoVsetkymiPesnickami(file.getAbsolutePath(), pesnicky);
+	        }
+	    }
 	}
 	
-	private static void skopirujPesnickyDoCielovychZloziek(File[] listZloziek, File[] listZloziekAutorov) {
-		File[] listPesniciek;
+	private static void vytvorCieloveZlozky(String cielovaZlozka, ArrayList<String> menaAutorov) {
 		
-		for (int i = 0; i < listZloziek.length; i++) {
-			if (listZloziek[i].isDirectory()) {
-				listPesniciek = listZloziek[i].listFiles();
-			}
-			else {
-				listPesniciek = listZloziek;
-			}
+		for (int i = 0; i < vsetkyPesnicky.size(); i++) {
+			String menoPesnicky = vsetkyPesnicky.get(i).getName();
+			String menoAutora = "";
 			
-			for (int j = 0; j < listPesniciek.length; j++) {
-				for (int k = 0; k < listZloziekAutorov.length; k++) {
+			// Zoskenuj meno autora z nazvu pesnicky
+			Scanner scan = new Scanner(menoPesnicky);
+			scan.useDelimiter("-");
+			if (scan.hasNext()) menoAutora += scan.next();
+			scan.close();
+			
+			// Pridaj meno autora do listu mien autorov
+			menaAutorov.add(menoAutora);
+			// Vytvor priecinok pre autora
+			File zlozkaAutora = new File(cielovaZlozka + "\\" + menoAutora);
+			zlozkaAutora.mkdir();
+		}
+	}
+	
+	private static void skopirujPesnickyDoCielovychZloziek(File[] listZloziekAutorov) {
+		for (int i = 0; i < vsetkyPesnicky.size(); i++) {
+			for (int j = 0; j < listZloziekAutorov.length; j++) {
+				
+				if (vsetkyPesnicky.get(i).getName().contains(listZloziekAutorov[j].getName())) {
 					
-					if (listPesniciek[j].getName().contains(listZloziekAutorov[k].getName())) {
-						
-						File fileToCopy = new File(listPesniciek[j].getAbsolutePath());
-						File copyTo = new File(listZloziekAutorov[k].getAbsolutePath() + "\\" + listPesniciek[j].getName());
-						
-						if (!listPesniciek[j].isDirectory()) {
-							try {
-								System.out.println("Kopirujem... " + listPesniciek[j].getName());
-								FileUtils.copyFile(fileToCopy, copyTo);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						}
+					File fileToCopy = new File(vsetkyPesnicky.get(i).getAbsolutePath());
+					File copyTo = new File(listZloziekAutorov[j].getAbsolutePath() + "\\" + vsetkyPesnicky.get(i).getName());
+					
+					try {
+						System.out.println("Kopirujem... " + vsetkyPesnicky.get(i).getName());
+						FileUtils.copyFile(fileToCopy, copyTo);
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
 				}
 			}
