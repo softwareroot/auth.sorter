@@ -1,28 +1,21 @@
 package com.root.musicsorter;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import javax.swing.JFrame;
 
 import org.apache.commons.io.FileUtils;
 
 public class MusicSorter {
 	
-	private static JFrame frame;
 	private static ArrayList<File> vsetkyPesnicky = new ArrayList<File>();
+	private static ArrayList<String> menaAutorov = new ArrayList<String>();
+	private static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		//initJFrame("Music Sorter v.Alpha 0.0001", 420, 260);
-		
-		Scanner scanner = new Scanner(System.in);
 		System.out.println("Zadaj uplnu cestu k suboru s hudbou:");
 		String zlozkaHudbaNeutriedena = scanner.nextLine();
-		
-		File[] listZloziek = new File(zlozkaHudbaNeutriedena).listFiles();
-		ArrayList<String> menaAutorov = new ArrayList<String>();
 		
 		System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou hudbou:");
 		String cielovaZlozka = scanner.nextLine();
@@ -32,22 +25,9 @@ public class MusicSorter {
 		vytvorPoleSoVsetkymiPesnickami(zlozkaHudbaNeutriedena, vsetkyPesnicky);
 		vytvorCieloveZlozky(cielovaZlozka, menaAutorov);
 		
-		File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();	
+		File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();
 		skopirujPesnickyDoCielovychZloziek(listZloziekAutorov);
 		System.out.println("Kopirovanie hudby skoncilo.");
-	}
-	
-	private static void initJFrame(String nazov, int sirka, int vyska) {
-		frame = new JFrame(nazov);
-		frame.setPreferredSize(new Dimension(sirka, vyska));
-		frame.setMinimumSize(new Dimension(sirka, vyska));
-		frame.setMaximumSize(new Dimension(sirka, vyska));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setVisible(true);
-		
-		frame.setLocationRelativeTo(null);
-		frame.pack();
 	}
 	
 	private static void vytvorZlozku(String cesta) {
@@ -75,17 +55,13 @@ public class MusicSorter {
 			String menoPesnicky = vsetkyPesnicky.get(i).getName();
 			String menoAutora = "";
 			
-			// Zoskenuj meno autora z nazvu pesnicky
 			Scanner scan = new Scanner(menoPesnicky);
 			scan.useDelimiter("-");
 			if (scan.hasNext()) menoAutora += scan.next();
 			scan.close();
 			
-			// Pridaj meno autora do listu mien autorov
 			menaAutorov.add(menoAutora);
-			// Vytvor priecinok pre autora
-			File zlozkaAutora = new File(cielovaZlozka + "\\" + menoAutora);
-			zlozkaAutora.mkdir();
+			vytvorZlozku(cielovaZlozka + "\\" + menoAutora);
 		}
 	}
 	
