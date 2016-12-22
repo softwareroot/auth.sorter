@@ -10,18 +10,19 @@ import javax.swing.JFrame;
 import org.apache.commons.io.FileUtils;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import java.awt.Font;
-import javax.swing.JTextPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
+
 
 public class MusicSorter {
 	
 	private static ArrayList<File> vsetkyPesnicky = new ArrayList<File>();
 	private static ArrayList<String> menaAutorov = new ArrayList<String>();
-	private static Scanner scanner = new Scanner(System.in);
 	
 	private static String zlozkaHudbaNeutriedena;
 	private static String cielovaZlozka;
@@ -29,21 +30,23 @@ public class MusicSorter {
 	/*******************************FRAME VARIABLES***********************************/
 	private static JFrame frame;
 	
-	private static JTextPane textPanelLog;
-	
 	private static JTextField absPathUnsortedText;
 	private static JTextField absPathSortedText;
 	
 	private static JLabel lblEnterTheAbsolute;
 	private static JLabel lblAbsolutePathOf;
-	private static JLabel lblLog;
 	private static JButton btnStartSorting;
-	
-	private static JProgressBar progressBarSorting;
+	private static JLabel log_info_label;
+	private static JButton btnNewButton;
+	private static JLabel lblNewLabel;
+	private static JLabel lblDevelopedBy;
 	
 	private static void initJFrame(String title, int width, int height) {
 		frame = new JFrame(title);
-		frame.setSize(600, 240);
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(
+				MusicSorter.class.getResource("/com/root/musicsorter/gallery-icon-active.png"
+		)));
+		frame.setSize(348, 201);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
@@ -53,13 +56,37 @@ public class MusicSorter {
 		initJTextFields();
 		initJButtons();
 		initProgressBar();
-		initLogPanel();
 		
 		frame.setVisible(true);
 	}
 	
 	public static void main(String[] args) {
-		initJFrame("Music Sorter", 600, 322);
+		initJFrame("Authsorter 1.0", 600, 322);
+		
+		btnNewButton = new JButton("<<");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				log_info_label.setText("");
+				
+				if (absPathUnsortedText.getText().isEmpty()) {
+					absPathUnsortedText.setText("Enter a valid path!");
+				} else {
+					if (!absPathUnsortedText.getText().contains("Enter a valid path!"))
+						absPathSortedText.setText(absPathUnsortedText.getText() + " - Sorted");
+				}
+			}
+		});
+		btnNewButton.setBounds(281, 30, 49, 23);
+		frame.getContentPane().add(btnNewButton);
+		
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/root-logo_small.png")));
+		lblNewLabel.setBounds(241, 137, 89, 25);
+		frame.getContentPane().add(lblNewLabel);
+		
+		lblDevelopedBy = new JLabel("Developed by");
+		lblDevelopedBy.setBounds(160, 144, 89, 14);
+		frame.getContentPane().add(lblDevelopedBy);
 		
 		/*
 		String cielovaZlozka = "";
@@ -87,7 +114,6 @@ public class MusicSorter {
 		
 		File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();
 		skopirujPesnickyDoCielovychZloziek(listZloziekAutorov); */
-		System.out.println("Kopirovanie hudby skoncilo.");
 	}
 	
 	
@@ -147,7 +173,6 @@ public class MusicSorter {
 					
 					try {
 						System.out.println("Kopirujem... " + vsetkyPesnicky.get(i).getName());
-						textPanelLog.setText("Kopirujem... " + vsetkyPesnicky.get(i).getName() + "\n");
 						FileUtils.copyFile(suborNaSkopirovanie, kamSkopirovat);
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -155,42 +180,43 @@ public class MusicSorter {
 				}
 			}
 		}
+		log_info_label.setText("Done!");
 	}
 	
 	private static void initJLables() {
 		/*JLabel 0*/
-		lblEnterTheAbsolute = new JLabel("Absolute path of the music folder");
+		lblEnterTheAbsolute = new JLabel("Enter the path of the music folder");
 		lblEnterTheAbsolute.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblEnterTheAbsolute.setBounds(10, 11, 222, 19);
+		lblEnterTheAbsolute.setBounds(10, 11, 233, 19);
 		frame.getContentPane().add(lblEnterTheAbsolute);
 		
 		/*JTextFiled Absolute path Sorted*/
-		lblAbsolutePathOf = new JLabel("Absolute path of the sorted music");
+		lblAbsolutePathOf = new JLabel("Where to save the sorted music folder");
 		lblAbsolutePathOf.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAbsolutePathOf.setBounds(10, 74, 233, 19);
+		lblAbsolutePathOf.setBounds(10, 62, 270, 19);
 		frame.getContentPane().add(lblAbsolutePathOf);
 	}
 	
 	private static void initJTextFields() {
 		/*JTextFiled Absolute path Unsorted*/
 		absPathUnsortedText = new JTextField();
-		absPathUnsortedText.setBounds(10, 31, 320, 20);
+		absPathUnsortedText.setBounds(10, 31, 261, 21);
 		frame.getContentPane().add(absPathUnsortedText);
 		absPathUnsortedText.setColumns(10);
 		
 		/*JTextFiled Absolute path Sorted*/
 		absPathSortedText = new JTextField();
 		absPathSortedText.setColumns(10);
-		absPathSortedText.setBounds(10, 93, 320, 20);
+		absPathSortedText.setBounds(10, 81, 320, 21);
 		frame.getContentPane().add(absPathSortedText);
 	}
 	
 	private static void initJButtons() {
-		
 		/*JButton Start Sorting*/
-		btnStartSorting = new JButton("Start Sorting");
+		btnStartSorting = new JButton("Begin");
 		btnStartSorting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				log_info_label.setText("Enter a valid path!");
 				zlozkaHudbaNeutriedena = absPathUnsortedText.getText();
 				cielovaZlozka = absPathSortedText.getText();
 				
@@ -201,24 +227,13 @@ public class MusicSorter {
 				skopirujPesnickyDoCielovychZloziek(listZloziekAutorov);
 			}
 		});
-		btnStartSorting.setBounds(10, 146, 109, 23);
+		btnStartSorting.setBounds(10, 113, 81, 23);
 		frame.getContentPane().add(btnStartSorting);
 	}
 	
 	private static void initProgressBar() {
-		progressBarSorting = new JProgressBar();
-		progressBarSorting.setBounds(129, 146, 201, 24);
-		frame.getContentPane().add(progressBarSorting);
-	}
-	
-	private static void initLogPanel() {
-		textPanelLog = new JTextPane();
-		textPanelLog.setBounds(340, 31, 244, 138);
-		frame.getContentPane().add(textPanelLog);
-		
-		lblLog = new JLabel("Log");
-		lblLog.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblLog.setBounds(340, 12, 30, 19);
-		frame.getContentPane().add(lblLog);
+		log_info_label = new JLabel("");
+		log_info_label.setBounds(102, 118, 148, 14);
+		frame.getContentPane().add(log_info_label);
 	}
 }
