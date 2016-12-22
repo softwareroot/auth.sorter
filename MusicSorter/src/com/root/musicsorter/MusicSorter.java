@@ -35,22 +35,27 @@ public class MusicSorter {
 		dir.mkdir();
 	}
 	
-	public static void vytvorPoleSoVsetkymiPesnickami(String nazovSuboru, ArrayList<File> pesnicky) {
-	    File directory = new File(nazovSuboru);
-
-	    File[] fList = directory.listFiles();
-	    
-	    for (File file : fList) {
-	        if (file.isFile()) {
-	        	pesnicky.add(file);
-	        } else if (file.isDirectory()) {
-	        	vytvorPoleSoVsetkymiPesnickami(file.getAbsolutePath(), pesnicky);
-	        }
-	    }
+	private static void skopirujPesnickyDoCielovychZloziek(File[] listZloziekAutorov) {
+		for (int i = 0; i < vsetkyPesnicky.size(); i++) {
+			for (int j = 0; j < listZloziekAutorov.length; j++) {
+				
+				if (vsetkyPesnicky.get(i).getName().contains(listZloziekAutorov[j].getName())) {
+					
+					File suborNaSkopirovanie = new File(vsetkyPesnicky.get(i).getAbsolutePath());
+					File kamSkopirovat = new File(listZloziekAutorov[j].getAbsolutePath() + "\\" + vsetkyPesnicky.get(i).getName());
+					
+					try {
+						System.out.println("Kopirujem... " + vsetkyPesnicky.get(i).getName());
+						FileUtils.copyFile(suborNaSkopirovanie, kamSkopirovat);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 	
 	private static void vytvorCieloveZlozky(String cielovaZlozka, ArrayList<String> menaAutorov) {
-		
 		for (int i = 0; i < vsetkyPesnicky.size(); i++) {
 			String menoPesnicky = vsetkyPesnicky.get(i).getName();
 			String menoAutora = "";
@@ -65,23 +70,16 @@ public class MusicSorter {
 		}
 	}
 	
-	private static void skopirujPesnickyDoCielovychZloziek(File[] listZloziekAutorov) {
-		for (int i = 0; i < vsetkyPesnicky.size(); i++) {
-			for (int j = 0; j < listZloziekAutorov.length; j++) {
-				
-				if (vsetkyPesnicky.get(i).getName().contains(listZloziekAutorov[j].getName())) {
-					
-					File fileToCopy = new File(vsetkyPesnicky.get(i).getAbsolutePath());
-					File copyTo = new File(listZloziekAutorov[j].getAbsolutePath() + "\\" + vsetkyPesnicky.get(i).getName());
-					
-					try {
-						System.out.println("Kopirujem... " + vsetkyPesnicky.get(i).getName());
-						FileUtils.copyFile(fileToCopy, copyTo);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		}
+	private static void vytvorPoleSoVsetkymiPesnickami(String nazovSuboru, ArrayList<File> pesnicky) {
+	    File[] fList = new File(nazovSuboru).listFiles();
+	    
+	    for (int i = 0; i < fList.length; i++) {
+	    	if (fList[i].isFile()) {
+	    		pesnicky.add(fList[i]);
+	    	} else if (fList[i].isDirectory()) {
+	    		// Rekurzia
+	    		vytvorPoleSoVsetkymiPesnickami(fList[i].getAbsolutePath(), pesnicky);
+	    	}
+	    }
 	}
 }
