@@ -35,24 +35,17 @@ public class MusicSorter {
 		dir.mkdir();
 	}
 	
-	private static void skopirujPesnickyDoCielovychZloziek(File[] listZloziekAutorov) {
-		for (int i = 0; i < vsetkyPesnicky.size(); i++) {
-			for (int j = 0; j < listZloziekAutorov.length; j++) {
-				
-				if (vsetkyPesnicky.get(i).getName().contains(listZloziekAutorov[j].getName())) {
-					
-					File suborNaSkopirovanie = new File(vsetkyPesnicky.get(i).getAbsolutePath());
-					File kamSkopirovat = new File(listZloziekAutorov[j].getAbsolutePath() + "\\" + vsetkyPesnicky.get(i).getName());
-					
-					try {
-						System.out.println("Kopirujem... " + vsetkyPesnicky.get(i).getName());
-						FileUtils.copyFile(suborNaSkopirovanie, kamSkopirovat);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		}
+	private static void vytvorPoleSoVsetkymiPesnickami(String nazovSuboru, ArrayList<File> pesnicky) {
+	    File[] fList = new File(nazovSuboru).listFiles();
+	    
+	    for (int i = 0; i < fList.length; i++) {
+	    	if (fList[i].isFile()) {
+	    		pesnicky.add(fList[i]);
+	    	} else if (fList[i].isDirectory()) {
+	    		// Rekurzia
+	    		vytvorPoleSoVsetkymiPesnickami(fList[i].getAbsolutePath(), pesnicky);
+	    	}
+	    }
 	}
 	
 	private static void vytvorCieloveZlozky(String cielovaZlozka, ArrayList<String> menaAutorov) {
@@ -66,20 +59,37 @@ public class MusicSorter {
 			scan.close();
 			
 			menaAutorov.add(menoAutora);
-			vytvorZlozku(cielovaZlozka + "\\" + menoAutora);
 		}
+		vyhodZbytocnePriecinky(cielovaZlozka, menaAutorov);
 	}
 	
-	private static void vytvorPoleSoVsetkymiPesnickami(String nazovSuboru, ArrayList<File> pesnicky) {
-	    File[] fList = new File(nazovSuboru).listFiles();
-	    
-	    for (int i = 0; i < fList.length; i++) {
-	    	if (fList[i].isFile()) {
-	    		pesnicky.add(fList[i]);
-	    	} else if (fList[i].isDirectory()) {
-	    		// Rekurzia
-	    		vytvorPoleSoVsetkymiPesnickami(fList[i].getAbsolutePath(), pesnicky);
-	    	}
-	    }
+	private static void vyhodZbytocnePriecinky(String cielovaZlozka, ArrayList<String> menaAutorov) {
+		for (int i = menaAutorov.size() - 1; i >= 0; i--) {
+			String konkretnyAutor = menaAutorov.get(i).toLowerCase();
+			
+			if (konkretnyAutor.contains("&") || konkretnyAutor.contains("feat") || konkretnyAutor.contains("ft"))
+				menaAutorov.remove(i);
+		}
+		
+		for (int i = 0; i < menaAutorov.size(); i++) vytvorZlozku(cielovaZlozka + "\\" + menaAutorov.get(i));
+	}
+	
+	private static void skopirujPesnickyDoCielovychZloziek(File[] listZloziekAutorov) {
+		for (int i = 0; i < vsetkyPesnicky.size(); i++) {
+			for (int j = 0; j < listZloziekAutorov.length; j++) {
+				
+				if (vsetkyPesnicky.get(i).getName().contains(listZloziekAutorov[j].getName())) {
+					File suborNaSkopirovanie = new File(vsetkyPesnicky.get(i).getAbsolutePath());
+					File kamSkopirovat = new File(listZloziekAutorov[j].getAbsolutePath() + "\\" + vsetkyPesnicky.get(i).getName());
+					
+					try {
+						System.out.println("Kopirujem... " + vsetkyPesnicky.get(i).getName());
+						FileUtils.copyFile(suborNaSkopirovanie, kamSkopirovat);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 }
