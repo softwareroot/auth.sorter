@@ -87,33 +87,6 @@ public class MusicSorter {
 		lblDevelopedBy = new JLabel("Developed by");
 		lblDevelopedBy.setBounds(160, 144, 89, 14);
 		frame.getContentPane().add(lblDevelopedBy);
-		
-		/*
-		String cielovaZlozka = "";
-		
-		boolean spravnaCesta = false;
-		while (!spravnaCesta) {
-		    try {
-		    	System.out.println("Zadaj uplnu cestu k suboru s hudbou:");
-				String zlozkaHudbaNeutriedena = scanner.nextLine();
-				
-				System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou hudbou:");
-				cielovaZlozka = scanner.nextLine();
-				
-				vytvorZlozku(cielovaZlozka);
-		    	vytvorPoleSoVsetkymiPesnickami(zlozkaHudbaNeutriedena, vsetkyPesnicky);
-				vytvorCieloveZlozky(cielovaZlozka, menaAutorov);
-		    	spravnaCesta = true;
-		    } catch (NullPointerException e) {
-		    	spravnaCesta = false;
-		    	System.out.println("Zadana cesta k suboru s hudbou neexistuje!");
-		    }
-		}
-		
-		scanner.close();
-		
-		File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();
-		skopirujPesnickyDoCielovychZloziek(listZloziekAutorov); */
 	}
 	
 	
