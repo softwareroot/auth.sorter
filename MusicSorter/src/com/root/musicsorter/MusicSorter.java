@@ -14,16 +14,29 @@ public class MusicSorter {
 	private static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		System.out.println("Zadaj uplnu cestu k suboru s hudbou:");
-		String zlozkaHudbaNeutriedena = scanner.nextLine();
+		String cielovaZlozka = "";
 		
-		System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou hudbou:");
-		String cielovaZlozka = scanner.nextLine();
+		boolean spravnaCesta = false;
+		while (!spravnaCesta) {
+		    try {
+		    	System.out.println("Zadaj uplnu cestu k suboru s hudbou:");
+				String zlozkaHudbaNeutriedena = scanner.nextLine();
+				
+				System.out.println("Zadaj uplnu cestu pre vytvorenie zlozky s utriedenou hudbou:");
+				cielovaZlozka = scanner.nextLine();
+				
+				vytvorZlozku(cielovaZlozka);
+		    	
+		    	vytvorPoleSoVsetkymiPesnickami(zlozkaHudbaNeutriedena, vsetkyPesnicky);
+				vytvorCieloveZlozky(cielovaZlozka, menaAutorov);
+		    	spravnaCesta = true;
+		    } catch (NullPointerException e) {
+		    	spravnaCesta = false;
+		    	System.out.println("Zadana cesta k suboru s hudbou neexistuje!");
+		    }
+		}
+		
 		scanner.close();
-		
-		vytvorZlozku(cielovaZlozka);
-		vytvorPoleSoVsetkymiPesnickami(zlozkaHudbaNeutriedena, vsetkyPesnicky);
-		vytvorCieloveZlozky(cielovaZlozka, menaAutorov);
 		
 		File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();
 		skopirujPesnickyDoCielovychZloziek(listZloziekAutorov);
@@ -49,16 +62,18 @@ public class MusicSorter {
 	}
 	
 	private static void vytvorCieloveZlozky(String cielovaZlozka, ArrayList<String> menaAutorov) {
-		for (int i = 0; i < vsetkyPesnicky.size(); i++) {
-			String menoPesnicky = vsetkyPesnicky.get(i).getName();
-			String menoAutora = "";
-			
-			Scanner scan = new Scanner(menoPesnicky);
-			scan.useDelimiter("-");
-			if (scan.hasNext()) menoAutora += scan.next();
-			scan.close();
-			
-			menaAutorov.add(menoAutora);
+		for (int i = vsetkyPesnicky.size() - 1; i >= 0; i--) {
+			if (vsetkyPesnicky.get(i).getName().contains(".mp3")) {
+				String menoPesnicky = vsetkyPesnicky.get(i).getName();
+				String menoAutora = "";
+				
+				Scanner scan = new Scanner(menoPesnicky);
+				scan.useDelimiter("-");
+				if (scan.hasNext()) menoAutora += scan.next();
+				scan.close();
+				
+				menaAutorov.add(menoAutora);
+			}
 		}
 		vyhodZbytocnePriecinky(cielovaZlozka, menaAutorov);
 	}
