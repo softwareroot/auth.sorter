@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 
 
 public class MusicSorter {
@@ -40,13 +41,14 @@ public class MusicSorter {
 	private static JButton btnNewButton;
 	private static JLabel lblNewLabel;
 	private static JLabel lblDevelopedBy;
+	private static JLabel label;
 	
 	private static void initJFrame(String title, int width, int height) {
 		frame = new JFrame(title);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(
 				MusicSorter.class.getResource("/com/root/musicsorter/gallery-icon-active.png"
 		)));
-		frame.setSize(348, 201);
+		frame.setSize(501, 235);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
@@ -63,7 +65,7 @@ public class MusicSorter {
 	public static void main(String[] args) {
 		initJFrame("Authsorter 1.0", 600, 322);
 		
-		btnNewButton = new JButton("<<");
+		btnNewButton = new JButton("Add Path");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				log_info_label.setText("");
@@ -76,17 +78,26 @@ public class MusicSorter {
 				}
 			}
 		});
-		btnNewButton.setBounds(281, 30, 49, 23);
+		btnNewButton.setBounds(369, 69, 116, 23);
 		frame.getContentPane().add(btnNewButton);
 		
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/root-logo_small.png")));
-		lblNewLabel.setBounds(241, 137, 89, 25);
+		lblNewLabel.setBounds(396, 174, 89, 25);
 		frame.getContentPane().add(lblNewLabel);
 		
 		lblDevelopedBy = new JLabel("Developed by");
-		lblDevelopedBy.setBounds(160, 144, 89, 14);
+		lblDevelopedBy.setBounds(315, 181, 89, 14);
 		frame.getContentPane().add(lblDevelopedBy);
+		
+		label = new JLabel("");
+		label.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/authsorter-logo0.png")));
+		label.setBounds(166, 8, 167, 34);
+		frame.getContentPane().add(label);
+		
+		JLabel lblVisitOurWebsite = new JLabel("Visit our ~ website ~");
+		lblVisitOurWebsite.setBounds(12, 182, 126, 14);
+		frame.getContentPane().add(lblVisitOurWebsite);
 	}
 	
 	
@@ -153,40 +164,40 @@ public class MusicSorter {
 				}
 			}
 		}
-		log_info_label.setText("Done!");
+		log_info_label.setText("Done Sorting and Copying!");
 	}
 	
 	private static void initJLables() {
 		/*JLabel 0*/
 		lblEnterTheAbsolute = new JLabel("Enter the path of the music folder");
 		lblEnterTheAbsolute.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblEnterTheAbsolute.setBounds(10, 11, 233, 19);
+		lblEnterTheAbsolute.setBounds(10, 50, 233, 19);
 		frame.getContentPane().add(lblEnterTheAbsolute);
 		
 		/*JTextFiled Absolute path Sorted*/
 		lblAbsolutePathOf = new JLabel("Where to save the sorted music folder");
 		lblAbsolutePathOf.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAbsolutePathOf.setBounds(10, 62, 270, 19);
+		lblAbsolutePathOf.setBounds(10, 102, 270, 19);
 		frame.getContentPane().add(lblAbsolutePathOf);
 	}
 	
 	private static void initJTextFields() {
 		/*JTextFiled Absolute path Unsorted*/
 		absPathUnsortedText = new JTextField();
-		absPathUnsortedText.setBounds(10, 31, 261, 21);
+		absPathUnsortedText.setBounds(10, 70, 349, 21);
 		frame.getContentPane().add(absPathUnsortedText);
 		absPathUnsortedText.setColumns(10);
 		
 		/*JTextFiled Absolute path Sorted*/
 		absPathSortedText = new JTextField();
 		absPathSortedText.setColumns(10);
-		absPathSortedText.setBounds(10, 81, 320, 21);
+		absPathSortedText.setBounds(10, 121, 349, 21);
 		frame.getContentPane().add(absPathSortedText);
 	}
 	
 	private static void initJButtons() {
 		/*JButton Start Sorting*/
-		btnStartSorting = new JButton("Begin");
+		btnStartSorting = new JButton("Begin Sorting");
 		btnStartSorting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				log_info_label.setText("Enter a valid path!");
@@ -200,13 +211,13 @@ public class MusicSorter {
 				skopirujPesnickyDoCielovychZloziek(listZloziekAutorov);
 			}
 		});
-		btnStartSorting.setBounds(10, 113, 81, 23);
+		btnStartSorting.setBounds(369, 120, 116, 23);
 		frame.getContentPane().add(btnStartSorting);
 	}
 	
 	private static void initProgressBar() {
 		log_info_label = new JLabel("");
-		log_info_label.setBounds(102, 118, 148, 14);
+		log_info_label.setBounds(10, 152, 184, 14);
 		frame.getContentPane().add(log_info_label);
 	}
 }
