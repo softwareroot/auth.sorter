@@ -12,6 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
+import java.awt.BorderLayout;
 import java.awt.Font;
 
 import java.awt.event.ActionListener;
@@ -40,11 +43,12 @@ public class MusicSorter {
 	private static JLabel log_info_label;
 	private static JLabel lblNewLabel;
 	private static JLabel lblDevelopedBy;
-	private static JLabel label;
 	private static JButton btnOpen;
 	
 	static JFrame popupFrame;
 	private static JLabel lblFirstRelease;
+	
+	private static JFileChooser fileChooser;
 	
 	private static void initJFrame(String title, int width, int height) {
 		frmAuthsorter = new JFrame(title);
@@ -61,10 +65,47 @@ public class MusicSorter {
 		initJLables();
 		initJTextFields();
 		initJButtons();
+		initFileChooser();
 		
 		popupFrame = new JFrame();
 		
 		frmAuthsorter.setVisible(true);
+	}
+	
+	private static void initFileChooser() {
+		fileChooser = new JFileChooser();
+		frmAuthsorter.getContentPane().add(fileChooser, BorderLayout.CENTER);
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/authsorter-lofe.png")));
+		lblNewLabel_1.setBounds(186, 6, 270, 34);
+		frmAuthsorter.getContentPane().add(lblNewLabel_1);
+	}
+	
+	private static void getFileSelected() {
+		if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+			//return fileChooser.getSelectedFile().getAbsolutePath();
+			
+			for (int i = menaAutorov.size() - 1; i >= 0; i--) {
+				menaAutorov.remove(i);
+			}
+			
+			for (int i = vsetkyPesnicky.size() - 1; i >= 0; i--) {
+				vsetkyPesnicky.remove(i);
+			}
+			
+			absPathUnsortedText.setText(fileChooser.getSelectedFile().getAbsolutePath());
+			absPathSortedText.setText(fileChooser.getSelectedFile().getAbsolutePath() + " - Sorted");
+			
+			zlozkaHudbaNeutriedena = absPathUnsortedText.getText();//absPathUnsortedText.getText();
+			cielovaZlozka = absPathSortedText.getText();
+		}
+	}
+	
+	public void closeWindow() {
+		//frame.setVisible(false);
+		//frame.dispose();
 	}
 	
 	public static void main(String[] args) {
@@ -164,12 +205,7 @@ public class MusicSorter {
 		lblDevelopedBy.setBounds(267, 182, 89, 14);
 		frmAuthsorter.getContentPane().add(lblDevelopedBy);
 		
-		label = new JLabel("");
-		label.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/authsorter-logo0.png")));
-		label.setBounds(166, 8, 167, 34);
-		frmAuthsorter.getContentPane().add(label);
-		
-		JLabel lblVisitOurWebsite = new JLabel("Visit our ~ website ~");
+		JLabel lblVisitOurWebsite = new JLabel("Visit my ~ website ~");
 		lblVisitOurWebsite.setBounds(12, 182, 124, 14);
 		frmAuthsorter.getContentPane().add(lblVisitOurWebsite);
 		
@@ -182,16 +218,19 @@ public class MusicSorter {
 	private static void initJTextFields() {
 		/*JTextFiled Absolute path Unsorted*/
 		absPathUnsortedText = new JTextField();
-		absPathUnsortedText.setBounds(9, 76, 409, 19);
+		absPathUnsortedText.setBounds(9, 76, 409, 25);
 		frmAuthsorter.getContentPane().add(absPathUnsortedText);
 		absPathUnsortedText.setColumns(10);
 		
 		/*JTextFiled Absolute path Sorted*/
 		absPathSortedText = new JTextField();
 		absPathSortedText.setColumns(10);
-		absPathSortedText.setBounds(8, 129, 324, 19);
+		absPathSortedText.setBounds(8, 129, 324, 25);
 		frmAuthsorter.getContentPane().add(absPathSortedText);
 	}
+	
+	private static String sortedText;
+	private static JLabel lblNewLabel_1;
 	
 	private static void initJButtons() {
 		/*JButton Start Sorting*/
@@ -203,8 +242,8 @@ public class MusicSorter {
 							+ "\nThis may take some time.");
 				
 				log_info_label.setText("Enter a valid path!");
-				zlozkaHudbaNeutriedena = absPathUnsortedText.getText();
-				cielovaZlozka = absPathSortedText.getText();
+				//zlozkaHudbaNeutriedena = fileChooser.getSelectedFile().getAbsolutePath();
+				//cielovaZlozka = fileChooser.getSelectedFile().getAbsolutePath() + " - Sorted";
 				
 				vytvorZlozku(cielovaZlozka);
 		    	vytvorPoleSoVsetkymiPesnickami(zlozkaHudbaNeutriedena, vsetkyPesnicky);
@@ -213,22 +252,28 @@ public class MusicSorter {
 				skopirujPesnickyDoCielovychZloziek(listZloziekAutorov);
 			}
 		});
-		btnStartSorting.setBounds(344, 129, 116, 18);
+		btnStartSorting.setBounds(344, 129, 116, 25);
 		frmAuthsorter.getContentPane().add(btnStartSorting);
 		
 		btnOpen = new JButton("...");
 		btnOpen.addActionListener(new ActionListener() {
-			String sortedText = "";
+			//String sortedText = "";
 			
 			public void actionPerformed(ActionEvent arg0) {
-				FileChooser fc = new FileChooser("Choose a file", 640, 480);
-				sortedText = fc.getFileSelected();
-				absPathUnsortedText.setText(sortedText);
-				fc.closeWindow();
-				absPathSortedText.setText(sortedText + " - Sorted");
+				//FileChooser fc = new FileChooser("Choose a file", 640, 480);
+				//sortedText = getFileSelected();
+				//absPathUnsortedText.setText(sortedText);
+				//absPathSortedText.setText(sortedText + " - Sorted");
+				
+				getFileSelected();
+				
+				System.out.println(sortedText);
+				//System.out.println(absPathUnsortedText.getText());
+				//System.out.println(absPathSortedText.getText());
+				System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
 			}
 		});
-		btnOpen.setBounds(429, 76, 32, 18);
+		btnOpen.setBounds(429, 76, 32, 25);
 		frmAuthsorter.getContentPane().add(btnOpen);
 		
 		JButton button = new JButton("");
@@ -236,7 +281,8 @@ public class MusicSorter {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(popupFrame, "Contact: rootgam3s@gmail.com\n"
 						+ "Website: http://www.rootgam3s.com/\n"
-						+ "Copyright: Copyright 2016 ©  Martin Gajdos, all rights reserved.");
+						+ "Copyright: Copyright 2016 ©  Martin Gajdos, all rights reserved.\n"
+						+ "Libraries used: Commons IO");
 			}
 		});
 		button.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/info.gif")));

@@ -40,5 +40,4 @@ public class FileChooser {
 		frame.setVisible(false);
 		frame.dispose();
 	}
-	
 }
