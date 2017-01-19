@@ -46,17 +46,16 @@ public class MusicSorter {
 	private static JButton btnOpen;
 	
 	static JFrame popupFrame;
-	private static JLabel lblFirstRelease;
 	
 	private static JFileChooser fileChooser;
 	
 	private static void initJFrame(String title, int width, int height) {
 		frmAuthsorter = new JFrame(title);
-		frmAuthsorter.setTitle("Authsorter 1.21");
+		frmAuthsorter.setTitle("auth.sorter 1.21");
 		frmAuthsorter.setIconImage(Toolkit.getDefaultToolkit().getImage(
 				MusicSorter.class.getResource("/com/root/musicsorter/gallery-icon-active.png"
 		)));
-		frmAuthsorter.setSize(477, 274);
+		frmAuthsorter.setSize(477, 282);
 		frmAuthsorter.setResizable(false);
 		frmAuthsorter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAuthsorter.setLocationRelativeTo(null);
@@ -78,13 +77,22 @@ public class MusicSorter {
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
 		lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/authsorter-lofe.png")));
-		lblNewLabel_1.setBounds(77, 20, 270, 34);
+		lblNewLabel_1.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/authsorter-logo-release121.png")));
+		lblNewLabel_1.setBounds(13, 10, 323, 55);
 		frmAuthsorter.getContentPane().add(lblNewLabel_1);
+		absPathSortedText = new JTextField();
+		absPathSortedText.setColumns(10);
+		absPathSortedText.setBounds(10, 161, 362, 25);
+		frmAuthsorter.getContentPane().add(absPathSortedText);
+		
+		lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/shade1.png")));
+		lblNewLabel_3.setBounds(382, 0, 103, 259);
+		frmAuthsorter.getContentPane().add(lblNewLabel_3);
 		
 		lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/logoicon.png")));
-		lblNewLabel_2.setBounds(347, 18, 36, 50);
+		lblNewLabel_2.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/shade.png")));
+		lblNewLabel_2.setBounds(0, -1, 408, 77);
 		frmAuthsorter.getContentPane().add(lblNewLabel_2);
 	}
 	
@@ -190,78 +198,8 @@ public class MusicSorter {
 	
 	private static void initJLables() {
 		/*JLabel 0*/
-		lblEnterTheAbsolute = new JLabel("Select the directory with your unsorted music");
-		lblEnterTheAbsolute.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblEnterTheAbsolute.setBounds(10, 79, 298, 19);
-		frmAuthsorter.getContentPane().add(lblEnterTheAbsolute);
 		
-		/*JTextFiled Absolute path Sorted*/
-		lblAbsolutePathOf = new JLabel("Where to save the folder with sorted music");
-		lblAbsolutePathOf.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAbsolutePathOf.setBounds(11, 133, 323, 19);
-		frmAuthsorter.getContentPane().add(lblAbsolutePathOf);
-		
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/root-logo_small.png")));
-		lblNewLabel.setBounds(342, 201, 89, 25);
-		frmAuthsorter.getContentPane().add(lblNewLabel);
-		
-		lblDevelopedBy = new JLabel("Developed by");
-		lblDevelopedBy.setBounds(269, 209, 89, 14);
-		frmAuthsorter.getContentPane().add(lblDevelopedBy);
-		
-		JLabel lblVisitOurWebsite = new JLabel("Visit my ~ website ~");
-		lblVisitOurWebsite.setBounds(14, 209, 124, 14);
-		frmAuthsorter.getContentPane().add(lblVisitOurWebsite);
-		
-		log_info_label = new JLabel("");
-		log_info_label.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
-		log_info_label.setBounds(14, 184, 184, 14);
-		frmAuthsorter.getContentPane().add(log_info_label);
-	}
-	
-	private static void initJTextFields() {
-		/*JTextFiled Absolute path Unsorted*/
-		absPathUnsortedText = new JTextField();
-		absPathUnsortedText.setBounds(11, 103, 409, 25);
-		frmAuthsorter.getContentPane().add(absPathUnsortedText);
-		absPathUnsortedText.setColumns(10);
-		
-		/*JTextFiled Absolute path Sorted*/
-		absPathSortedText = new JTextField();
-		absPathSortedText.setColumns(10);
-		absPathSortedText.setBounds(10, 156, 324, 25);
-		frmAuthsorter.getContentPane().add(absPathSortedText);
-	}
-	
-	private static String sortedText;
-	private static JLabel lblNewLabel_1;
-	private static JLabel lblNewLabel_2;
-	
-	private static void initJButtons() {
-		/*JButton Start Sorting*/
-		btnStartSorting = new JButton("Begin Sorting");
-		btnStartSorting.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (absPathSortedText.getText() != "")
-					JOptionPane.showMessageDialog(popupFrame, "Authsorter is creating directories and copying your music."
-							+ "\nThis may take some time.");
-				
-				log_info_label.setText("Enter a valid path!");
-				zlozkaHudbaNeutriedena = absPathUnsortedText.getText();
-				cielovaZlozka = absPathSortedText.getText();
-				
-				vytvorZlozku(cielovaZlozka);
-		    	vytvorPoleSoVsetkymiPesnickami(zlozkaHudbaNeutriedena, vsetkyPesnicky);
-				vytvorCieloveZlozky(cielovaZlozka, menaAutorov);
-				File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();
-				skopirujPesnickyDoCielovychZloziek(listZloziekAutorov);
-			}
-		});
-		btnStartSorting.setBounds(346, 156, 116, 25);
-		frmAuthsorter.getContentPane().add(btnStartSorting);
-		
-		btnOpen = new JButton("...");
+		btnOpen = new JButton("Browse");
 		btnOpen.addActionListener(new ActionListener() {
 			//String sortedText = "";
 			
@@ -279,8 +217,82 @@ public class MusicSorter {
 				System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
 			}
 		});
-		btnOpen.setBounds(431, 103, 32, 25);
+		btnStartSorting = new JButton("Sort");
+		btnStartSorting.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (absPathSortedText.getText() != "")
+					JOptionPane.showMessageDialog(popupFrame, "Authsorter is creating directories and copying your music."
+							+ "\nThis may take some time.");
+				
+				log_info_label.setText("Enter a valid path!");
+				zlozkaHudbaNeutriedena = absPathUnsortedText.getText();
+				cielovaZlozka = absPathSortedText.getText();
+				
+				vytvorZlozku(cielovaZlozka);
+		    	vytvorPoleSoVsetkymiPesnickami(zlozkaHudbaNeutriedena, vsetkyPesnicky);
+				vytvorCieloveZlozky(cielovaZlozka, menaAutorov);
+				File[] listZloziekAutorov = new File(cielovaZlozka).listFiles();
+				skopirujPesnickyDoCielovychZloziek(listZloziekAutorov);
+			}
+		});
+		
+		lblInfo = new JLabel("Info");
+		lblInfo.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblInfo.setBounds(417, 11, 31, 14);
+		frmAuthsorter.getContentPane().add(lblInfo);
+		absPathUnsortedText = new JTextField();
+		absPathUnsortedText.setBounds(11, 111, 361, 25);
+		frmAuthsorter.getContentPane().add(absPathUnsortedText);
+		absPathUnsortedText.setColumns(10);
+		btnStartSorting.setBounds(392, 161, 69, 25);
+		frmAuthsorter.getContentPane().add(btnStartSorting);
+		btnOpen.setBounds(392, 111, 69, 25);
 		frmAuthsorter.getContentPane().add(btnOpen);
+		lblEnterTheAbsolute = new JLabel("Directory with unsorted music");
+		lblEnterTheAbsolute.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		lblEnterTheAbsolute.setBounds(10, 84, 200, 19);
+		frmAuthsorter.getContentPane().add(lblEnterTheAbsolute);
+		
+		/*JTextFiled Absolute path Sorted*/
+		lblAbsolutePathOf = new JLabel("Directory with sorted music");
+		lblAbsolutePathOf.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		lblAbsolutePathOf.setBounds(11, 138, 189, 19);
+		frmAuthsorter.getContentPane().add(lblAbsolutePathOf);
+		
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/root-logo_small.png")));
+		lblNewLabel.setBounds(383, 221, 90, 25);
+		frmAuthsorter.getContentPane().add(lblNewLabel);
+		
+		lblDevelopedBy = new JLabel("Developed by");
+		lblDevelopedBy.setBounds(308, 228, 73, 14);
+		frmAuthsorter.getContentPane().add(lblDevelopedBy);
+		
+		JLabel lblVisitOurWebsite = new JLabel("Visit my website!");
+		lblVisitOurWebsite.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		lblVisitOurWebsite.setBounds(9, 223, 104, 25);
+		frmAuthsorter.getContentPane().add(lblVisitOurWebsite);
+		
+		log_info_label = new JLabel("");
+		log_info_label.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		log_info_label.setBounds(10, 202, 177, 14);
+		frmAuthsorter.getContentPane().add(log_info_label);
+	}
+	
+	private static void initJTextFields() {
+		/*JTextFiled Absolute path Unsorted*/
+		
+		/*JTextFiled Absolute path Sorted*/
+	}
+	
+	private static String sortedText;
+	private static JLabel lblNewLabel_1;
+	private static JLabel lblNewLabel_2;
+	private static JLabel lblNewLabel_3;
+	private static JLabel lblInfo;
+	
+	private static void initJButtons() {
+		/*JButton Start Sorting*/
 		
 		JButton button = new JButton("");
 		button.addActionListener(new ActionListener() {
@@ -292,12 +304,7 @@ public class MusicSorter {
 			}
 		});
 		button.setIcon(new ImageIcon(MusicSorter.class.getResource("/com/root/musicsorter/info.gif")));
-		button.setBounds(437, 202, 25, 23);
+		button.setBounds(415, 29, 25, 23);
 		frmAuthsorter.getContentPane().add(button);
-		
-		lblFirstRelease = new JLabel("First Release 1.2.1");
-		lblFirstRelease.setFont(new Font("Tahoma", Font.ITALIC, 11));
-		lblFirstRelease.setBounds(247, 53, 98, 14);
-		frmAuthsorter.getContentPane().add(lblFirstRelease);
 	}
 }
